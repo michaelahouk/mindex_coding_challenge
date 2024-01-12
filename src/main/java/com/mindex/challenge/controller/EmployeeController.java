@@ -37,6 +37,11 @@ public class EmployeeController {
         return employeeService.update(employee);
     }
 
+    /**
+     * Fetches a {@link ReportingStructure} for a given {@link Employee}
+     * @param id the employeeId of an Employee
+     * @return the {@link ReportingStructure} of the provided Employee
+     */
     @GetMapping("/employee/reporting/{id}")
     public ReportingStructure getReportingStructure(@PathVariable String id) {
         LOG.debug("Received request for reporting structure for employee id [{}]", id);

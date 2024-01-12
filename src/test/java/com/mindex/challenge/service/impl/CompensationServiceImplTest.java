@@ -16,8 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -56,6 +55,13 @@ public class CompensationServiceImplTest {
         // Read checks
         Compensation readCompensation = restTemplate.getForEntity(compensationReadUrl, Compensation.class, createdCompensation.getEmployee().getEmployeeId()).getBody();
         assertCompensationEquivalence(createdCompensation, readCompensation);
+    }
+
+    @Test
+    public void testReadWithInvalidId_ReturnsNull() {
+        // Read null check
+        Compensation readCompensation = restTemplate.getForEntity(compensationReadUrl, Compensation.class, "not a real id").getBody();
+        assertNull(readCompensation);
     }
 
     @Test
