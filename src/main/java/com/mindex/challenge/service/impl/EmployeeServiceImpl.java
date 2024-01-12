@@ -55,6 +55,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.save(employee);
     }
 
+//     Worth noting that this can be accomplished much more cleanly in later versions of Mongo
+//     using an aggregation pipeline with a $graphLookup step
     @Override
     public ReportingStructure getReportingStructure(String id) {
         LOG.debug("Fetching reporting structure for employee with id [{}]", id);
@@ -63,6 +65,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         Stack<String> directReportsToFetch = new Stack<>();
         // Fetch the employee from the database to look at their direct reports
         Employee employee = employeeRepository.findByEmployeeId(id);
+
+        if (employee == null) {
+            LOG.warn("Failed to fetch ReportingStructure - no employee found for id [{}]", id);
+            return null;
+        }
         // Add all initial direct reports
         directReportsToFetch.addAll(Optional.ofNullable(employee.getDirectReports()).orElse(Collections.emptyList())
                 .stream()

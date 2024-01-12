@@ -140,6 +140,12 @@ public class EmployeeServiceImplTest {
         assertEmployeeEquivalence(testEmployee, reportingStructure.getEmployee());
     }
 
+    @Test
+    public void testReportingStructure_InvalidEmployeeId_ReturnsNull() {
+        ReportingStructure reportingStructure = restTemplate.getForEntity(reportingStructureUrl, ReportingStructure.class, "invalid id").getBody();
+        assertNull(reportingStructure);
+    }
+
     private Employee saveEmployee(Employee employee) {
         return restTemplate.postForEntity(employeeUrl, employee, Employee.class).getBody();
     }
